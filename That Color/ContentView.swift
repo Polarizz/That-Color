@@ -8,14 +8,17 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var paletteColors: [Color] = Array(repeating: .clear, count: 12)
+
+    @State private var paletteColors: [Color] = Array(repeating: .clear, count: 6)
 
     var body: some View {
-        ZStack {
-            CameraView(paletteColors: $paletteColors)
-                .edgesIgnoringSafeArea(.all)
+//        ZStack {
+//            CameraView(paletteColors: $paletteColors)
+//                .edgesIgnoringSafeArea(.all)
+//
+//            PaletteView(colors: paletteColors)
+//        }
 
-            PaletteView(colors: paletteColors)
-        }
+        GridView()
     }
 }

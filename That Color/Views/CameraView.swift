@@ -14,7 +14,7 @@ struct CameraView: UIViewControllerRepresentable {
         private var lastUpdateTime: TimeInterval = 0
         private var paletteHistory: [[UIColor]] = []
         private let maxHistoryCount = 5
-        private let colorCount = 12
+        private let colorCount = 6
 
         init(parent: CameraView) {
             self.parent = parent
@@ -22,7 +22,7 @@ struct CameraView: UIViewControllerRepresentable {
 
         func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
             let currentTime = CACurrentMediaTime()
-            if currentTime - lastUpdateTime < 0.008 { return }
+            if currentTime - lastUpdateTime < 0.01 { return }
             lastUpdateTime = currentTime
 
             guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }

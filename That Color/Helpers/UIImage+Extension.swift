@@ -17,7 +17,7 @@ extension UIImage {
         }
     }
 
-    func extractColors(colorCount: Int = 12, scaleSize: CGSize = CGSize(width: 64, height: 64)) -> [UIColor] {
+    func extractColors(colorCount: Int = 6, scaleSize: CGSize = CGSize(width: 64, height: 64)) -> [UIColor] {
         guard let resizedImage = self.resized(to: scaleSize), let cgImage = resizedImage.cgImage else { return [] }
 
         let width = cgImage.width
@@ -40,6 +40,7 @@ extension UIImage {
         context.draw(cgImage, in: CGRect(x: 0, y: 0, width: width, height: height))
 
         var pixels: [ColorBucket] = []
+        pixels.reserveCapacity(width * height)
         for y in 0..<height {
             for x in 0..<width {
                 let offset = (y * width + x) * bytesPerPixel
@@ -117,11 +118,11 @@ func splitBucket(_ bucket: [ColorBucket]) -> ([ColorBucket], [ColorBucket]) {
     let longestRange = max(rRange, gRange, bRange)
 
     if longestRange == rRange {
-        return bucket.sorted { $0.x < $1.x }.split()
+        return bucket.parallelSorted { $0.x < $1.x }.split()
     } else if longestRange == gRange {
-        return bucket.sorted { $0.y < $1.y }.split()
+        return bucket.parallelSorted { $0.y < $1.y }.split()
     } else {
-        return bucket.sorted { $0.z < $1.z }.split()
+        return bucket.parallelSorted { $0.z < $1.z }.split()
     }
 }
 
@@ -131,5 +132,13 @@ extension Array {
         let left = Array(self[0..<middle])
         let right = Array(self[middle..<count])
         return (left, right)
+    }
+
+    func parallelSorted(by areInIncreasingOrder: @escaping (Element, Element) -> Bool) -> [Element] {
+        var sortedArray = self
+        DispatchQueue.concurrentPerform(iterations: 1) { _ in
+            sortedArray.sort(by: areInIncreasingOrder)
+        }
+        return sortedArray
     }
 }
