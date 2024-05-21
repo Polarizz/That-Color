@@ -11,13 +11,11 @@ struct GridView: View {
 
     @StateObject private var colorComputation = ColorComputation()
 
-    @GestureState var scale: CGFloat = 1.0
-
     @State private var lastScale: CGFloat = 1.0
     @State private var scrollOffset: CGFloat = 0.0
     @State private var previousScale: CGFloat = 1.0
     @State private var velocity: CGFloat = 0.0
-    @State private var fakeScale: CGFloat = 1.0
+    @State private var scale: CGFloat = 1.0
     @State private var zoomed: Bool = false
     @State private var lastTime: TimeInterval = 0.0
 
@@ -31,43 +29,48 @@ struct GridView: View {
                 LazyVGrid(columns: columnsSmall, spacing: 0) {
                     ForEach(0..<colorComputation.sortedColors.count, id: \.self) { index in
                         let color = colorComputation.sortedColors[index]
-                        Rectangle()
+                        RoundedRectangle(cornerRadius: 9, style: .continuous)
                             .fill(Color(red: color.0, green: color.1, blue: color.2))
                             .aspectRatio(1, contentMode: .fit)
                             .overlay(
-                                Text("\(index)")
-                                    .foregroundColor(.white)
-                                    .font(.caption2)
+                                RoundedRectangle(cornerRadius: 9, style: .continuous)
+                                    .strokeBorder(.black.opacity(0.13), lineWidth: 3)
+
                             )
                             .onAppear {
                                 if index >= colorComputation.sortedColors.count - prefetchThreshold {
                                     colorComputation.computeNextBatch()
                                 }
                             }
+                            .padding(4)
                     }
                 }
-                .scaleEffect(0.61, anchor: .top)
+                .scaleEffect(0.6, anchor: .top)
                 .opacity(zoomed ? 1 : 0)
+                .animation(.smooth(duration: 0.5), value: zoomed)
                 .zIndex(1)
 
                 LazyVGrid(columns: columns, spacing: 0) {
                     ForEach(0..<colorComputation.sortedColors.count, id: \.self) { index in
                         let color = colorComputation.sortedColors[index]
-                        Rectangle()
+                        RoundedRectangle(cornerRadius: 5, style: .continuous)
                             .fill(Color(red: color.0, green: color.1, blue: color.2))
                             .aspectRatio(1, contentMode: .fit)
                             .overlay(
-                                Text("\(index)")
-                                    .foregroundColor(.white)
-                                    .font(.caption2)
+                                RoundedRectangle(cornerRadius: 5, style: .continuous)
+                                    .strokeBorder(.black.opacity(0.13), lineWidth: 3)
+
                             )
                             .onAppear {
                                 if index >= colorComputation.sortedColors.count - prefetchThreshold {
                                     colorComputation.computeNextBatch()
                                 }
                             }
+                            .padding(2.5)
                     }
                 }
+                .opacity(zoomed ? 0 : 1)
+                .animation(.smooth(duration: 0.5), value: zoomed)
                 .zIndex(0)
 
                 GeometryReader { proxy in
@@ -75,6 +78,7 @@ struct GridView: View {
                     Color.clear.preference(key: ScrollViewOffsetPreferenceKey.self, value: offset)
                 }
             }
+            .ignoresSafeArea()
         }
         .onAppear {
             colorComputation.computeNextBatch()
@@ -84,43 +88,37 @@ struct GridView: View {
         .onPreferenceChange(ScrollViewOffsetPreferenceKey.self) { value in
             scrollOffset = value
         }
-        .scaleEffect(scale + (fakeScale - scale), anchor: .top)
+        .scaleEffect(scale, anchor: .top)
         .gesture(
             MagnificationGesture()
-                .updating($scale) { value, state, _ in
-                    state = max(lastScale * value, 1.0)
-                }
                 .onChanged { value in
-                    let currentTime = CACurrentMediaTime()
-                    let deltaTime = currentTime - lastTime
-                    let deltaScale = value - previousScale
-
-                    velocity = deltaScale / CGFloat(deltaTime)
-                    lastTime = currentTime
-                    fakeScale = max(lastScale * value, 1.0)
+                    let deltaScale = value - 1.0
+                    scale = max(lastScale * value, 1.0)
+                    velocity = deltaScale / CGFloat(CACurrentMediaTime() - lastTime)
+                    lastTime = CACurrentMediaTime()
                     previousScale = value
 
                     withAnimation(.smooth(duration: 0.3)) {
-                        zoomed = fakeScale >= 1.65
+                        zoomed = scale >= 1.65
                     }
                 }
                 .onEnded { _ in
-                    withAnimation(.smooth(duration: 0.39)) {
+                    withAnimation(.smooth(duration: 0.3)) {
                         if velocity > 0 {
                             zoomed = true
-                            fakeScale = 1.65
+                            scale = 1.65
                         } else {
                             zoomed = false
-                            fakeScale = 1
+                            scale = 1
                         }
                     }
 
-                    lastScale = fakeScale
+                    lastScale = scale
                     previousScale = 1.0
                     velocity = 0
                 }
         )
-        .animation(.smooth(duration: 0.39), value: scale)
+        .background(.mainBackground)
     }
 }
 

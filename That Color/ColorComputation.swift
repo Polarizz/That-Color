@@ -27,7 +27,7 @@ class ColorComputation: ObservableObject {
     private var colors: [(Double, Double, Double)] = []
     private var currentBatchIndex = 0
     private let batchSize = 1000
-    private let totalColors = 256 * 256 * 256
+    private let totalColors = 64 * 64 * 64
     private let accumulator = SortedColorsAccumulator()
 
     init() {
@@ -35,10 +35,10 @@ class ColorComputation: ObservableObject {
     }
 
     func generateColors() {
-        for red in 0..<256 {
-            for green in 0..<256 {
-                for blue in 0..<256 {
-                    colors.append((Double(red) / 255.0, Double(green) / 255.0, Double(blue) / 255.0))
+        for red in 0..<64 {
+            for green in 0..<64 {
+                for blue in 0..<64 {
+                    colors.append((Double(red) / 63.0, Double(green) / 63.0, Double(blue) / 63.0))
                 }
             }
         }
