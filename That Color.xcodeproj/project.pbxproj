@@ -19,6 +19,10 @@
 		D4E180552BFC148F00053746 /* Polygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E180542BFC148F00053746 /* Polygon.swift */; };
 		D4E180572BFC44FA00053746 /* GridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E180562BFC44FA00053746 /* GridView.swift */; };
 		D4E180592BFC4FCE00053746 /* ColorComputation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E180582BFC4FCE00053746 /* ColorComputation.swift */; };
+		D4E1805C2BFD379100053746 /* Glur in Frameworks */ = {isa = PBXBuildFile; productRef = D4E1805B2BFD379100053746 /* Glur */; };
+		D4E1805F2BFD37E700053746 /* Variablur in Frameworks */ = {isa = PBXBuildFile; productRef = D4E1805E2BFD37E700053746 /* Variablur */; };
+		D4E180612BFD38D900053746 /* ProgressiveBlur.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E180602BFD38D900053746 /* ProgressiveBlur.swift */; };
+		D4E1806F2BFD474B00053746 /* BNHightideRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4E1806E2BFD474B00053746 /* BNHightideRegular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +38,9 @@
 		D4E180542BFC148F00053746 /* Polygon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Polygon.swift; sourceTree = "<group>"; };
 		D4E180562BFC44FA00053746 /* GridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridView.swift; sourceTree = "<group>"; };
 		D4E180582BFC4FCE00053746 /* ColorComputation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorComputation.swift; sourceTree = "<group>"; };
+		D4E180602BFD38D900053746 /* ProgressiveBlur.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressiveBlur.swift; sourceTree = "<group>"; };
+		D4E180642BFD448200053746 /* That-Color-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "That-Color-Info.plist"; sourceTree = SOURCE_ROOT; };
+		D4E1806E2BFD474B00053746 /* BNHightideRegular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = BNHightideRegular.ttf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,7 +48,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4E1805C2BFD379100053746 /* Glur in Frameworks */,
 				D4E180532BFC11A800053746 /* PolyKit in Frameworks */,
+				D4E1805F2BFD37E700053746 /* Variablur in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -67,10 +76,13 @@
 		D4257DB62BF6B31900B2FC57 /* That Color */ = {
 			isa = PBXGroup;
 			children = (
+				D4E180642BFD448200053746 /* That-Color-Info.plist */,
 				D4257DB72BF6B31900B2FC57 /* That_ColorApp.swift */,
+				D4E180652BFD450800053746 /* Fonts */,
 				D4257DB92BF6B31900B2FC57 /* ContentView.swift */,
 				D4E180562BFC44FA00053746 /* GridView.swift */,
 				D4E180582BFC4FCE00053746 /* ColorComputation.swift */,
+				D4E180602BFD38D900053746 /* ProgressiveBlur.swift */,
 				D4E180502BFC0F7700053746 /* Helpers */,
 				D4257DC52BF6B32B00B2FC57 /* Views */,
 				D4257DBB2BF6B31A00B2FC57 /* Assets.xcassets */,
@@ -114,6 +126,14 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		D4E180652BFD450800053746 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				D4E1806E2BFD474B00053746 /* BNHightideRegular.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -132,6 +152,8 @@
 			name = "That Color";
 			packageProductDependencies = (
 				D4E180522BFC11A800053746 /* PolyKit */,
+				D4E1805B2BFD379100053746 /* Glur */,
+				D4E1805E2BFD37E700053746 /* Variablur */,
 			);
 			productName = "That Color";
 			productReference = D4257DB42BF6B31900B2FC57 /* That Color.app */;
@@ -163,6 +185,8 @@
 			mainGroup = D4257DAB2BF6B31900B2FC57;
 			packageReferences = (
 				D4E180512BFC11A800053746 /* XCRemoteSwiftPackageReference "PolyKit" */,
+				D4E1805A2BFD379100053746 /* XCRemoteSwiftPackageReference "Glur" */,
+				D4E1805D2BFD37E700053746 /* XCRemoteSwiftPackageReference "Variablur" */,
 			);
 			productRefGroup = D4257DB52BF6B31900B2FC57 /* Products */;
 			projectDirPath = "";
@@ -178,6 +202,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4E1806F2BFD474B00053746 /* BNHightideRegular.ttf in Resources */,
 				D4257DBF2BF6B31A00B2FC57 /* Preview Assets.xcassets in Resources */,
 				D4257DBC2BF6B31A00B2FC57 /* Assets.xcassets in Resources */,
 			);
@@ -195,6 +220,7 @@
 				D4257DC72BF6B33400B2FC57 /* PalatteView.swift in Sources */,
 				D4E180572BFC44FA00053746 /* GridView.swift in Sources */,
 				D4257DBA2BF6B31900B2FC57 /* ContentView.swift in Sources */,
+				D4E180612BFD38D900053746 /* ProgressiveBlur.swift in Sources */,
 				D4257DCB2BF6B36200B2FC57 /* UIImage+Extension.swift in Sources */,
 				D4257DB82BF6B31900B2FC57 /* That_ColorApp.swift in Sources */,
 				D4257DC92BF6B34600B2FC57 /* CameraView.swift in Sources */,
@@ -335,6 +361,7 @@
 				DEVELOPMENT_TEAM = C4DBP4HKWQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "That-Color-Info.plist";
 				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -365,6 +392,7 @@
 				DEVELOPMENT_TEAM = C4DBP4HKWQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "That-Color-Info.plist";
 				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -416,6 +444,22 @@
 				minimumVersion = 2.2.0;
 			};
 		};
+		D4E1805A2BFD379100053746 /* XCRemoteSwiftPackageReference "Glur" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/joogps/Glur.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.4;
+			};
+		};
+		D4E1805D2BFD37E700053746 /* XCRemoteSwiftPackageReference "Variablur" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/daprice/Variablur";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -423,6 +467,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D4E180512BFC11A800053746 /* XCRemoteSwiftPackageReference "PolyKit" */;
 			productName = PolyKit;
+		};
+		D4E1805B2BFD379100053746 /* Glur */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D4E1805A2BFD379100053746 /* XCRemoteSwiftPackageReference "Glur" */;
+			productName = Glur;
+		};
+		D4E1805E2BFD37E700053746 /* Variablur */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D4E1805D2BFD37E700053746 /* XCRemoteSwiftPackageReference "Variablur" */;
+			productName = Variablur;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

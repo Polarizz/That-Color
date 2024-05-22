@@ -34,7 +34,7 @@ struct GridView: View {
                             .aspectRatio(1, contentMode: .fit)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 9, style: .continuous)
-                                    .strokeBorder(.black.opacity(0.13), lineWidth: 3)
+                                    .strokeBorder(.black.opacity(0.13), lineWidth: 5)
 
                             )
                             .onAppear {

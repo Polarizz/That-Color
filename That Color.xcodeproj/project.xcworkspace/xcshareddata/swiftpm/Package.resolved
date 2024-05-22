@@ -1,6 +1,15 @@
 {
-  "originHash" : "46967f340902a01c782045df2d088dca946c4f5a0bd7b8c269e59cd3de6bb77b",
+  "originHash" : "765796026a291a5d7ca5a57d38ab735585ac5e9a1f3256f441bb56b54b646357",
   "pins" : [
+    {
+      "identity" : "glur",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/joogps/Glur.git",
+      "state" : {
+        "revision" : "9e00ff79da318f2c78b749b1027e54a9d4de2e33",
+        "version" : "1.0.4"
+      }
+    },
     {
       "identity" : "polykit",
       "kind" : "remoteSourceControl",
@@ -8,6 +17,15 @@
       "state" : {
         "revision" : "4d84c4469daf5e9ee4d1768dd3018d6b985ee868",
         "version" : "2.2.0"
+      }
+    },
+    {
+      "identity" : "variablur",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/daprice/Variablur",
+      "state" : {
+        "branch" : "main",
+        "revision" : "29fdd8c5e2721c1706b0ed8008d516f8d8d75879"
       }
     }
   ],
