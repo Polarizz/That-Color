@@ -16,6 +16,8 @@ struct ContentView: View {
 
     @StateObject private var colorComputation = ColorComputation()
 
+    @State private var paletteColors: [Color] = Array(repeating: .clear, count: 6)
+
     var body: some View {
 //        ZStack {
 //            CameraView(paletteColors: $paletteColors)
@@ -32,7 +34,7 @@ struct ContentView: View {
                     }
             }
         }
-        .tabViewStyle(PageTabViewStyle())
+        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
         .ignoresSafeArea()
     }
 }

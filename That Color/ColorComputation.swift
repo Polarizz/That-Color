@@ -5,104 +5,127 @@
 //  Created by Paul Wong on 5/20/24.
 //
 
-import Foundation
 import SwiftUI
 import Combine
 
-actor SortedColorsAccumulator {
-    private var accumulatedSortedColors: [(Double, Double, Double)] = []
-
-    func append(contentsOf newColors: [(Double, Double, Double)]) {
-        accumulatedSortedColors.append(contentsOf: newColors)
-    }
-
-    func getSortedColors() -> [(Double, Double, Double)] {
-        return accumulatedSortedColors
-    }
-}
-
 class ColorComputation: ObservableObject {
     @Published var sortedColors: [[(Double, Double, Double)]] = Array(repeating: [], count: 6)
-    private var colors: [[(Double, Double, Double)]] = Array(repeating: [], count: 6)
-    private var currentBatchIndex = Array(repeating: 0, count: 6)
-    private let batchSize = 1000
-    private let totalColors = 64 * 64 * 64
-    private let accumulator = Array(repeating: SortedColorsAccumulator(), count: 6)
+
+    private let colorSpaceSize = 64
+    private let segments = 6
+    private let batchSize = 500
 
     init() {
-        generateColors()
+        computeColors()
     }
 
-    func generateColors() {
-        let hueStep = 1.0 / 6.0
-        for red in 0..<64 {
-            for green in 0..<64 {
-                for blue in 0..<64 {
-                    let color = (Double(red) / 63.0, Double(green) / 63.0, Double(blue) / 63.0)
-                    let (hue, saturation, brightness) = getHSB(color: color)
-                    let segment = Int(hue / hueStep)
-                    if segment < 6 { // Ensuring we only have six segments
-                        colors[segment].append(color)
+    func computeColors() {
+        DispatchQueue.global(qos: .userInitiated).async {
+            var allColors = [(Double, Double, Double)]()
+
+            // Generate colors in 64x64x64 color space
+            for r in 0..<self.colorSpaceSize {
+                for g in 0..<self.colorSpaceSize {
+                    for b in 0..<self.colorSpaceSize {
+                        let color = (Double(r) / Double(self.colorSpaceSize - 1),
+                                     Double(g) / Double(self.colorSpaceSize - 1),
+                                     Double(b) / Double(self.colorSpaceSize - 1))
+                        if self.isValidColor(color: color) {
+                            allColors.append(color)
+                        }
                     }
                 }
             }
-        }
 
-        // Sort each segment by saturation and brightness
-        for i in 0..<6 {
-            colors[i].sort { (color1, color2) -> Bool in
-                let hsb1 = getHSB(color: color1)
-                let hsb2 = getHSB(color: color2)
-                if hsb1.1 == hsb2.1 {
-                    return hsb1.2 < hsb2.2
+            // Sort colors into segments concurrently
+            let group = DispatchGroup()
+            var segmentColorsArray = [[(Double, Double, Double)]](repeating: [], count: self.segments)
+
+            for segment in 0..<self.segments {
+                group.enter()
+                DispatchQueue.global(qos: .userInitiated).async {
+                    var segmentColors = allColors.filter { color in
+                        let hue = UIColor(red: color.0, green: color.1, blue: color.2, alpha: 1).hsb.hue
+                        let segmentRange = 1.0 / Double(self.segments)
+                        return hue >= Double(segment) * segmentRange && hue < Double(segment + 1) * segmentRange
+                    }
+
+                    segmentColors = self.batchProcessColors(colors: segmentColors)
+                    segmentColorsArray[segment] = segmentColors
+                    group.leave()
                 }
-                return hsb1.1 < hsb2.1
+            }
+
+            group.notify(queue: .main) {
+                self.sortedColors = segmentColorsArray
             }
         }
     }
 
-    func getHSB(color: (Double, Double, Double)) -> (Double, Double, Double) {
-        let r = color.0
-        let g = color.1
-        let b = color.2
-        let maxVal = max(r, g, b)
-        let minVal = min(r, g, b)
-        let delta = maxVal - minVal
+    private func isValidColor(color: (Double, Double, Double)) -> Bool {
+        let hsb = UIColor(red: color.0, green: color.1, blue: color.2, alpha: 1).hsb
+        return hsb.saturation > 0.5 && hsb.brightness > 0.5 // Adjusted for more vibrant and lighter colors
+    }
 
-        var hue: Double = 0
-        let saturation: Double = maxVal == 0 ? 0 : delta / maxVal
-        let brightness: Double = maxVal
+    private func colorDistance(_ color1: (Double, Double, Double), _ color2: (Double, Double, Double)) -> Double {
+        let rDiff = color1.0 - color2.0
+        let gDiff = color1.1 - color2.1
+        let bDiff = color1.2 - color2.2
+        return sqrt(rDiff * rDiff + gDiff * gDiff + bDiff * bDiff)
+    }
 
-        if delta != 0 {
-            if maxVal == r {
-                hue = (g - b) / delta + (g < b ? 6 : 0)
-            } else if maxVal == g {
-                hue = (b - r) / delta + 2
-            } else {
-                hue = (r - g) / delta + 4
-            }
-            hue /= 6
+    private func batchProcessColors(colors: [(Double, Double, Double)]) -> [(Double, Double, Double)] {
+        let batches = stride(from: 0, to: colors.count, by: batchSize).map {
+            Array(colors[$0..<min($0 + batchSize, colors.count)])
         }
 
-        return (hue, saturation, brightness)
+        var sortedColors = [(Double, Double, Double)]()
+        var currentBatch = batches.first ?? []
+
+        for _ in 0..<batches.count {
+            currentBatch = tspSort(colors: currentBatch)
+            sortedColors.append(contentsOf: currentBatch)
+
+            if let nextBatch = batches.dropFirst().first {
+                currentBatch = nextBatch
+            } else {
+                break
+            }
+        }
+
+        return sortedColors
+    }
+
+    private func tspSort(colors: [(Double, Double, Double)]) -> [(Double, Double, Double)] {
+        guard !colors.isEmpty else { return [] }
+
+        var path = [colors[0]]
+        var remainingColors = Array(colors.dropFirst())
+
+        while !remainingColors.isEmpty {
+            let lastColor = path.last!
+            let closestColorIndex = remainingColors.indices.min(by: { colorDistance(lastColor, remainingColors[$0]) < colorDistance(lastColor, remainingColors[$1]) })!
+            path.append(remainingColors[closestColorIndex])
+            remainingColors.remove(at: closestColorIndex)
+        }
+
+        return path
     }
 
     func computeNextBatch(segment: Int) {
-        Task {
-            let start = currentBatchIndex[segment] * batchSize
-            let end = min(start + batchSize, colors[segment].count)
-            guard start < end else { return }
-            let batch = Array(colors[segment][start..<end])
+        // Logic to fetch more colors for a specific segment if needed
+    }
+}
 
-            await accumulator[segment].append(contentsOf: batch)
+extension UIColor {
+    var hsb: (hue: Double, saturation: Double, brightness: Double) {
+        var hue: CGFloat = 0
+        var saturation: CGFloat = 0
+        var brightness: CGFloat = 0
+        var alpha: CGFloat = 0
 
-            let updatedSortedColors = await accumulator[segment].getSortedColors()
+        getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
 
-            DispatchQueue.main.async {
-                self.sortedColors[segment] = updatedSortedColors
-            }
-
-            currentBatchIndex[segment] += 1
-        }
+        return (Double(hue), Double(saturation), Double(brightness))
     }
 }

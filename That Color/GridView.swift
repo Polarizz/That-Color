@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct GridView: View {
-    
+
     @ObservedObject var colorComputation: ColorComputation
     let segment: Int
-    
+
     @State private var lastScale: CGFloat = 1.0
     @State private var scrollOffset: CGFloat = 0.0
     @State private var previousScale: CGFloat = 1.0
@@ -19,11 +19,11 @@ struct GridView: View {
     @State private var scale: CGFloat = 1.0
     @State private var zoomed: Bool = false
     @State private var lastTime: TimeInterval = 0.0
-    
+
     let columns = Array(repeating: GridItem(.fixed(UIScreen.main.bounds.width / 10), spacing: 0), count: 10)
     let columnsSmall = Array(repeating: GridItem(.fixed(UIScreen.main.bounds.width / 6), spacing: 0), count: 6)
     let prefetchThreshold = 300 // Adjust this to determine how many items before the end to trigger pre-fetching
-    
+
     var body: some View {
         ScrollView {
             ZStack(alignment: .top) {
@@ -49,7 +49,7 @@ struct GridView: View {
                 .opacity(zoomed ? 1 : 0)
                 .animation(.smooth(duration: 0.5), value: zoomed)
                 .zIndex(1)
-                
+
                 LazyVGrid(columns: columns, spacing: 0) {
                     ForEach(0..<colorComputation.sortedColors[segment].count, id: \.self) { index in
                         let color = colorComputation.sortedColors[segment][index]
@@ -71,7 +71,7 @@ struct GridView: View {
                 .opacity(zoomed ? 0 : 1)
                 .animation(.smooth(duration: 0.5), value: zoomed)
                 .zIndex(0)
-                
+
                 GeometryReader { proxy in
                     let offset = proxy.frame(in: .named("scroll")).minY
                     Color.clear.preference(key: ScrollViewOffsetPreferenceKey.self, value: offset)
@@ -96,7 +96,7 @@ struct GridView: View {
                     velocity = deltaScale / CGFloat(CACurrentMediaTime() - lastTime)
                     lastTime = CACurrentMediaTime()
                     previousScale = value
-                    
+
                     withAnimation(.smooth(duration: 0.3)) {
                         zoomed = scale >= 1.65
                     }
@@ -111,7 +111,7 @@ struct GridView: View {
                             scale = 1
                         }
                     }
-                    
+
                     lastScale = scale
                     previousScale = 1.0
                     velocity = 0
@@ -148,31 +148,34 @@ struct GridView: View {
                 .foregroundStyle(.primaryLabel)
                 .shadow(color: .black.opacity(0.19), radius: 1, x: 10, y: 10)
                 .padding()
+                .padding(.top)
             , alignment: .top
         )
         .overlay(
             HStack(spacing: 0) {
                 Spacer()
                 
-                Circle()
+                Polygon(count: 3, relativeCornerRadius: 0.5)
                     .fill(.primaryLabel)
-                    .frame(width: 80, height: 80)
+                    .frame(width: 120, height: 120)
+                    .rotationEffect(.degrees(210))
                     .shadow(color: .black.opacity(0.19), radius: 1, x: 10, y: 10)
-                
+                    .padding(-40)
+
                 Spacer()
             }
-                .overlay(
-                    Polygon(count: 3, relativeCornerRadius: 0.5)
-                        .fill(.regularMaterial)
-                        .frame(width: 50, height: 50)
-                        .rotationEffect(.degrees(30))
-                        .brightness(-0.1)
-                    , alignment: .leading
-                )
-                .padding(.top, 10)
-                .padding(.horizontal)
-                .padding(.vertical, 30)
-                .padding()
+            .overlay(
+                Polygon(count: 4, relativeCornerRadius: 0.5)
+                    .fill(.regularMaterial)
+                    .frame(width: 50, height: 50)
+                    .brightness(-0.1)
+                    .rotationEffect(.degrees(45))
+                , alignment: .leading
+            )
+            .padding(.top, 10)
+            .padding(.horizontal)
+            .padding(.vertical, 30)
+            .padding()
             , alignment: .bottom
         )
     }
