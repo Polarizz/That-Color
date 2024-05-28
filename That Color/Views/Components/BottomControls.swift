@@ -9,23 +9,47 @@ import SwiftUI
 //import PolyKit
 
 struct BottomControls: View {
+
+    @GestureState private var isTapped = false
+
+    let width: CGFloat = 79
+//    let action: () -> ()
+
     var body: some View {
         HStack(spacing: 0) {
             Spacer()
 
             Circle()
-                .fill(.primaryLabel)
-                .frame(width: 80, height: 80)
-                .shadow(color: .black.opacity(0.13), radius: 1, x: 10, y: 10)
+                .fill(.clear)
+                .strokeBorder(Color.white, lineWidth: 3.5)
+                .frame(width: width, height: width)
+                .overlay(
+                    Circle()
+                        .fill(.white)
+                        .frame(width: width - 12, height: width - 12)
+                        .scaleEffect(isTapped ? 0.85 : 1)
+                        .animation(.smooth(duration: 0.39), value: isTapped)
+
+                )
+                .simultaneousGesture(
+                    DragGesture(minimumDistance: 0)
+                        .updating($isTapped) { _, isTapped, _ in
+                            isTapped = true
+                        }
+                        .onEnded { _ in
+//                            action()
+                        }
+                )
 
             Spacer()
         }
         .overlay(
-            Polygon(count: 3, relativeCornerRadius: 0.5)
-                .fill(.regularMaterial)
+            RoundedRectangle(cornerRadius: 6, style: .continuous)
                 .frame(width: 50, height: 50)
-                .rotationEffect(.degrees(30))
-                .brightness(-0.1)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 6, style: .continuous)
+                        .strokeBorder(.white.opacity(0.9), lineWidth: 2)
+                )
             , alignment: .leading
         )
         .padding(.top, 10)

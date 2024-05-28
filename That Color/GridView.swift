@@ -12,6 +12,8 @@ struct GridView: View {
     @ObservedObject var colorComputation: ColorComputation
     let segment: Int
 
+    @GestureState private var gestureScale: CGFloat = 1.0
+
     @State private var lastScale: CGFloat = 1.0
     @State private var scrollOffset: CGFloat = 0.0
     @State private var previousScale: CGFloat = 1.0
@@ -82,22 +84,24 @@ struct GridView: View {
         .onAppear {
             colorComputation.computeNextBatch(segment: segment)
         }
-        .animation(.easeInOut(duration: 0.2), value: scale)
         .coordinateSpace(name: "scroll")
         .onPreferenceChange(ScrollViewOffsetPreferenceKey.self) { value in
             scrollOffset = value
         }
-        .scaleEffect(scale, anchor: .top)
-        .gesture(
-            MagnificationGesture()
+        .scaleEffect(gestureScale + (scale - gestureScale), anchor: .top)
+        .highPriorityGesture(
+            MagnificationGesture(minimumScaleDelta: 0)
+                .updating($gestureScale) { value, state, _ in
+                    state = value
+                }
                 .onChanged { value in
                     let deltaScale = value - 1.0
-                    scale = max(lastScale * value, 1.0)
-                    velocity = deltaScale / CGFloat(CACurrentMediaTime() - lastTime)
-                    lastTime = CACurrentMediaTime()
-                    previousScale = value
 
                     withAnimation(.smooth(duration: 0.3)) {
+                        scale = max(lastScale * value, 1.0)
+                        velocity = deltaScale / CGFloat(CACurrentMediaTime() - lastTime)
+                        lastTime = CACurrentMediaTime()
+                        previousScale = value
                         zoomed = scale >= 1.65
                     }
                 }
@@ -110,74 +114,15 @@ struct GridView: View {
                             zoomed = false
                             scale = 1
                         }
-                    }
 
-                    lastScale = scale
-                    previousScale = 1.0
-                    velocity = 0
+                        lastScale = scale
+                        previousScale = 1.0
+                        velocity = 0
+                    }
                 }
         )
+        .animation(.smooth(duration: 0.25))
         .background(.mainBackground)
-        .overlay(
-            LinearGradient(
-                gradient: Gradient(colors: [Color.mainBackground.opacity(0.0), Color.mainBackground.opacity(0.6)]),
-                startPoint: .bottom,
-                endPoint: .top
-            )
-            .frame(height: 320)
-            .padding([.horizontal, .top], -40)
-            .allowsHitTesting(false)
-            .ignoresSafeArea()
-            , alignment: .top
-        )
-        .overlay(
-            LinearGradient(
-                gradient: Gradient(colors: [Color.mainBackground.opacity(0.0), Color.mainBackground.opacity(0.6)]),
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .frame(height: 390)
-            .padding([.horizontal, .bottom], -40)
-            .allowsHitTesting(false)
-            .ignoresSafeArea()
-            , alignment: .bottom
-        )
-        .overlay(
-            Text("79%")
-                .font(.custom("BNHightideRegular", size: 70))
-                .foregroundStyle(.primaryLabel)
-                .shadow(color: .black.opacity(0.19), radius: 1, x: 10, y: 10)
-                .padding()
-                .padding(.top)
-            , alignment: .top
-        )
-        .overlay(
-            HStack(spacing: 0) {
-                Spacer()
-                
-                Polygon(count: 3, relativeCornerRadius: 0.5)
-                    .fill(.primaryLabel)
-                    .frame(width: 120, height: 120)
-                    .rotationEffect(.degrees(210))
-                    .shadow(color: .black.opacity(0.19), radius: 1, x: 10, y: 10)
-                    .padding(-40)
-
-                Spacer()
-            }
-            .overlay(
-                Polygon(count: 4, relativeCornerRadius: 0.5)
-                    .fill(.regularMaterial)
-                    .frame(width: 50, height: 50)
-                    .brightness(-0.1)
-                    .rotationEffect(.degrees(45))
-                , alignment: .leading
-            )
-            .padding(.top, 10)
-            .padding(.horizontal)
-            .padding(.vertical, 30)
-            .padding()
-            , alignment: .bottom
-        )
     }
 }
 

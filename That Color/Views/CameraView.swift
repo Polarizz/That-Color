@@ -9,12 +9,14 @@ import SwiftUI
 import AVFoundation
 
 struct CameraView: UIViewControllerRepresentable {
+    @Binding var paletteColors: [Color]
+    var colorCount: Int // dynamically update the number of colors based on selection
+
     class Coordinator: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
         var parent: CameraView
         private var lastUpdateTime: TimeInterval = 0
         private var paletteHistory: [[UIColor]] = []
-        private let maxHistoryCount = 5
-        private let colorCount = 6
+        private let maxHistoryCount = 3
 
         init(parent: CameraView) {
             self.parent = parent
@@ -32,8 +34,8 @@ struct CameraView: UIViewControllerRepresentable {
             let uiImage = UIImage(cgImage: cgImage)
 
             DispatchQueue.global(qos: .userInitiated).async {
-                var colors = uiImage.extractColors(colorCount: self.colorCount)
-                colors = self.ensurePaletteSize(colors, targetSize: self.colorCount)
+                var colors = uiImage.extractColors(colorCount: self.parent.colorCount)
+                colors = self.ensurePaletteSize(colors, targetSize: self.parent.colorCount)
                 DispatchQueue.main.async {
                     self.addPaletteToHistory(colors)
                     self.parent.paletteColors = self.calculateAveragePalette()
@@ -93,8 +95,6 @@ struct CameraView: UIViewControllerRepresentable {
             return averagePalette.map { Color($0) }
         }
     }
-
-    @Binding var paletteColors: [Color]
 
     func makeCoordinator() -> Coordinator {
         return Coordinator(parent: self)

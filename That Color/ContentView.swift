@@ -7,34 +7,23 @@
 
 import SwiftUI
 
-enum BlurType: String, CaseIterable {
-    case clipped = "Clipped"
-    case freeStyle = "Free Style"
+class GridConfig: ObservableObject {
+    @Published var rowCount: Int = 4
+    @Published var columnCount: Int = 1
 }
 
 struct ContentView: View {
-
-    @StateObject private var colorComputation = ColorComputation()
-
-    @State private var paletteColors: [Color] = Array(repeating: .clear, count: 6)
+    @StateObject private var gridConfig = GridConfig()
+    @State private var paletteColors: [Color] = Array(repeating: .clear, count: 24)
+    @State private var selectedItem: String = "1×4"
 
     var body: some View {
-//        ZStack {
-//            CameraView(paletteColors: $paletteColors)
-//                .edgesIgnoringSafeArea(.all)
-//
-//            PaletteView(colors: paletteColors)
-//        }
+        ZStack {
+            CameraView(paletteColors: $paletteColors, colorCount: gridConfig.rowCount * gridConfig.columnCount)
+                .edgesIgnoringSafeArea(.all)
 
-        TabView {
-            ForEach(0..<6, id: \.self) { segment in
-                GridView(colorComputation: colorComputation, segment: segment)
-                    .tabItem {
-                        Text("Segment \(segment + 1)")
-                    }
-            }
+            PaletteView(colors: paletteColors, selectedItem: $selectedItem)
+                .environmentObject(gridConfig)
         }
-        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-        .ignoresSafeArea()
     }
 }

@@ -9,11 +9,23 @@ import SwiftUI
 import Combine
 
 class ColorComputation: ObservableObject {
-    @Published var sortedColors: [[(Double, Double, Double)]] = Array(repeating: [], count: 6)
+    @Published var sortedColors: [[(Double, Double, Double)]] = Array(repeating: [], count: 8)
 
     private let colorSpaceSize = 64
-    private let segments = 6
+    private let segments = 8 // Red, Orange, Yellow, Green, Teal, Blue, Indigo, Purple
     private let batchSize = 500
+
+    private let hueRanges: [(Double, Double)] = [
+        (0.0, 0.03),     // Red
+        (0.03, 0.1),     // Orange
+        (0.1, 0.17),     // Yellow
+        (0.17, 0.3),     // Green
+        (0.3, 0.4),      // Teal
+        (0.4, 0.55),     // Blue
+        (0.55, 0.65),    // Indigo
+        (0.65, 0.8),     // Purple
+        (0.8, 1.0)       // Red continuation
+    ]
 
     init() {
         computeColors()
@@ -37,17 +49,28 @@ class ColorComputation: ObservableObject {
                 }
             }
 
-            // Sort colors into segments concurrently
+            // Sort colors into hue categories concurrently
             let group = DispatchGroup()
             var segmentColorsArray = [[(Double, Double, Double)]](repeating: [], count: self.segments)
 
             for segment in 0..<self.segments {
                 group.enter()
                 DispatchQueue.global(qos: .userInitiated).async {
+                    let hueRange = self.hueRanges[segment]
                     var segmentColors = allColors.filter { color in
                         let hue = UIColor(red: color.0, green: color.1, blue: color.2, alpha: 1).hsb.hue
-                        let segmentRange = 1.0 / Double(self.segments)
-                        return hue >= Double(segment) * segmentRange && hue < Double(segment + 1) * segmentRange
+                        return hue >= hueRange.0 && hue < hueRange.1
+                    }
+
+                    // Sort by saturation and brightness before TSP
+                    segmentColors.sort {
+                        let hsb1 = UIColor(red: $0.0, green: $0.1, blue: $0.2, alpha: 1).hsb
+                        let hsb2 = UIColor(red: $1.0, green: $1.1, blue: $1.2, alpha: 1).hsb
+                        if hsb1.saturation != hsb2.saturation {
+                            return hsb1.saturation > hsb2.saturation
+                        } else {
+                            return hsb1.brightness > hsb2.brightness
+                        }
                     }
 
                     segmentColors = self.batchProcessColors(colors: segmentColors)
