@@ -66,15 +66,14 @@ struct PaletteView: View {
                                         let index = rowIndex * gridConfig.columnCount + columnIndex
                                         if index < colors.count {
                                             colors[index]
-                                                .frame(minHeight: 0, maxHeight: .infinity)
                                                 .background(Color.black)
                                                 .cornerRadius(6)
+                                                .transition(.opacity)
                                         }
                                     }
                                 }
                             }
                         }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
                     .frame(height: calculateHeight(geoSize: geo.size))
                     .overlay(
@@ -96,7 +95,6 @@ struct PaletteView: View {
                         }
                         .padding(14)
                         .transformEffect(.identity)
-//                        .animation(nil)
                         , alignment: .bottomLeading
                     )
                     .overlay(

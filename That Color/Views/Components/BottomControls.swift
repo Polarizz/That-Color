@@ -6,11 +6,11 @@
 //
 
 import SwiftUI
-//import PolyKit
 
 struct BottomControls: View {
 
     @GestureState private var isTapped = false
+    @StateObject private var orientationViewModel = DeviceOrientationViewModel()
 
     let width: CGFloat = 79
 //    let action: () -> ()
@@ -46,6 +46,7 @@ struct BottomControls: View {
         .overlay(
             RoundedRectangle(cornerRadius: 6, style: .continuous)
                 .frame(width: 50, height: 50)
+                .rotationEffect(orientationViewModel.rotationAngle) // Apply rotation based on orientation
                 .overlay(
                     RoundedRectangle(cornerRadius: 6, style: .continuous)
                         .strokeBorder(.white.opacity(0.9), lineWidth: 2)

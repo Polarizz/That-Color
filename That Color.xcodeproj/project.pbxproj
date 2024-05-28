@@ -14,6 +14,9 @@
 		D4257DC72BF6B33400B2FC57 /* PalatteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4257DC62BF6B33400B2FC57 /* PalatteView.swift */; };
 		D4257DC92BF6B34600B2FC57 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4257DC82BF6B34600B2FC57 /* CameraView.swift */; };
 		D4257DCB2BF6B36200B2FC57 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4257DCA2BF6B36200B2FC57 /* UIImage+Extension.swift */; };
+		D48528052C05B6BE004289DE /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48528042C05B6BE004289DE /* Haptics.swift */; };
+		D48528072C05BB1E004289DE /* SafeAreaBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48528062C05BB1E004289DE /* SafeAreaBlock.swift */; };
+		D48528092C05BE56004289DE /* Orientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48528082C05BE56004289DE /* Orientation.swift */; };
 		D4E1804D2BFC0BD300053746 /* BottomControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E1804C2BFC0BD300053746 /* BottomControls.swift */; };
 		D4E180532BFC11A800053746 /* PolyKit in Frameworks */ = {isa = PBXBuildFile; productRef = D4E180522BFC11A800053746 /* PolyKit */; };
 		D4E180552BFC148F00053746 /* Polygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E180542BFC148F00053746 /* Polygon.swift */; };
@@ -35,6 +38,9 @@
 		D4257DC62BF6B33400B2FC57 /* PalatteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PalatteView.swift; sourceTree = "<group>"; };
 		D4257DC82BF6B34600B2FC57 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		D4257DCA2BF6B36200B2FC57 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
+		D48528042C05B6BE004289DE /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
+		D48528062C05BB1E004289DE /* SafeAreaBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeAreaBlock.swift; sourceTree = "<group>"; };
+		D48528082C05BE56004289DE /* Orientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Orientation.swift; sourceTree = "<group>"; };
 		D4E1804C2BFC0BD300053746 /* BottomControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomControls.swift; sourceTree = "<group>"; };
 		D4E180542BFC148F00053746 /* Polygon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Polygon.swift; sourceTree = "<group>"; };
 		D4E180562BFC44FA00053746 /* GridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridView.swift; sourceTree = "<group>"; };
@@ -115,6 +121,7 @@
 			isa = PBXGroup;
 			children = (
 				D4E1804C2BFC0BD300053746 /* BottomControls.swift */,
+				D48528062C05BB1E004289DE /* SafeAreaBlock.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -124,6 +131,8 @@
 			children = (
 				D4257DCA2BF6B36200B2FC57 /* UIImage+Extension.swift */,
 				D4E180542BFC148F00053746 /* Polygon.swift */,
+				D48528042C05B6BE004289DE /* Haptics.swift */,
+				D48528082C05BE56004289DE /* Orientation.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -221,12 +230,15 @@
 			files = (
 				D4E180592BFC4FCE00053746 /* ColorComputation.swift in Sources */,
 				D4E1804D2BFC0BD300053746 /* BottomControls.swift in Sources */,
+				D48528052C05B6BE004289DE /* Haptics.swift in Sources */,
 				D4257DC72BF6B33400B2FC57 /* PalatteView.swift in Sources */,
 				D4E180572BFC44FA00053746 /* GridView.swift in Sources */,
 				D4257DBA2BF6B31900B2FC57 /* ContentView.swift in Sources */,
 				D4E180612BFD38D900053746 /* ProgressiveBlur.swift in Sources */,
 				D4257DCB2BF6B36200B2FC57 /* UIImage+Extension.swift in Sources */,
+				D48528092C05BE56004289DE /* Orientation.swift in Sources */,
 				D4257DB82BF6B31900B2FC57 /* That_ColorApp.swift in Sources */,
+				D48528072C05BB1E004289DE /* SafeAreaBlock.swift in Sources */,
 				D4257DC92BF6B34600B2FC57 /* CameraView.swift in Sources */,
 				D4E180552BFC148F00053746 /* Polygon.swift in Sources */,
 			);
@@ -366,12 +378,14 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "That-Color-Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.photography";
 				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIRequiresFullScreen = NO;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -397,12 +411,14 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "That-Color-Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.photography";
 				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIRequiresFullScreen = NO;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
