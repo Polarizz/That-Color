@@ -8,7 +8,7 @@
 import SwiftUI
 
 class GridConfig: ObservableObject {
-    @Published var rowCount: Int = 4 {
+    @Published var rowCount: Int = 3 {
         didSet {
             updateColorCount()
         }
@@ -18,7 +18,7 @@ class GridConfig: ObservableObject {
             updateColorCount()
         }
     }
-    @Published var colorCount: Int = 4
+    @Published var colorCount: Int = 3
 
     private func updateColorCount() {
         colorCount = rowCount * columnCount
@@ -28,7 +28,7 @@ class GridConfig: ObservableObject {
 struct ContentView: View {
     @StateObject private var gridConfig = GridConfig()
     @State private var paletteColors: [Color] = []
-    @State private var selectedItem: String = "1×4"
+    @State private var selectedItem: String = "1×3"
 
     var body: some View {
         ZStack {
