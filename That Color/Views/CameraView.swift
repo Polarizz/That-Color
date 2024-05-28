@@ -10,7 +10,7 @@ import AVFoundation
 
 struct CameraView: UIViewControllerRepresentable {
     @Binding var paletteColors: [Color]
-    var colorCount: Int // dynamically update the number of colors based on selection
+    var colorCount: Int
 
     class Coordinator: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
         var parent: CameraView
@@ -103,7 +103,7 @@ struct CameraView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {
         let viewController = UIViewController()
         let captureSession = AVCaptureSession()
-        captureSession.sessionPreset = .low // Lower resolution for reduced resource usage
+        captureSession.sessionPreset = .low
 
         guard let videoCaptureDevice = selectCaptureDevice() else { return viewController }
         let videoInput: AVCaptureDeviceInput
@@ -135,7 +135,12 @@ struct CameraView: UIViewControllerRepresentable {
         return viewController
     }
 
-    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
+        // Update the colorCount when grid configuration changes
+        if let coordinator = context.coordinator as? Coordinator {
+            coordinator.parent = self
+        }
+    }
 
     private func selectCaptureDevice() -> AVCaptureDevice? {
         return AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back)
