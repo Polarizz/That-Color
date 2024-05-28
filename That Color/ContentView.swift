@@ -28,7 +28,7 @@ class GridConfig: ObservableObject {
 struct ContentView: View {
     @StateObject private var gridConfig = GridConfig()
     @State private var paletteColors: [Color] = []
-    @State private var selectedItem: String = "1×3"
+    @State private var selectedItem: String = "3 COLORS"
 
     var body: some View {
         ZStack {

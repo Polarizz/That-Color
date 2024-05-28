@@ -13,11 +13,11 @@ struct PaletteView: View {
 
     @EnvironmentObject var gridConfig: GridConfig
 
-    let items = ["1×3", "1×4", "1×6", "3×3", "3×4"]
+    let items = ["3 COLORS", "4 COLORS", "6 COLORS", "9 COLORS", "12 COLORS"]
 
     var colors: [Color]
     @Binding var selectedItem: String
-    @State var heightSize: String = "1×3"
+    @State var heightSize: String = "3 COLORS"
 
     var body: some View {
         VStack(spacing: 0) {
@@ -38,9 +38,9 @@ struct PaletteView: View {
 
                                     HStack(spacing: 0) {
                                         Text(item)
-                                            .font(.custom("SFCamera", size: 17))
+                                            .font(.custom("SFCamera", size: 15))
                                             .foregroundStyle(.white.opacity(0.39))
-                                            .padding(.horizontal)
+                                            .padding(.horizontal, 20)
 
                                         Spacer()
                                     }
@@ -53,7 +53,7 @@ struct PaletteView: View {
                                 )
                                 .contentShape(Rectangle())
                                 .opacity(calculateOpacity(for: index))
-                                .animation(.smooth(duration: 0.39))
+                                .animation(.smooth(duration: 0.6))
                             }
                         }
                     }
@@ -69,10 +69,6 @@ struct PaletteView: View {
                                                 .frame(minHeight: 0, maxHeight: .infinity)
                                                 .background(Color.black)
                                                 .cornerRadius(6)
-                                                .overlay(
-                                                    RoundedRectangle(cornerRadius: 6, style: .continuous)
-                                                        .strokeBorder(Color.white.opacity(0.07), lineWidth: 1)
-                                                )
                                         }
                                     }
                                 }
@@ -81,6 +77,28 @@ struct PaletteView: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
                     .frame(height: calculateHeight(geoSize: geo.size))
+                    .overlay(
+                        ZStack {
+                            Text(selectedItem)
+                                .font(.custom("SFCamera", size: 15))
+                                .padding(.vertical, 3)
+                                .padding(.horizontal, 6)
+                                .foregroundStyle(.white)
+                                .blendMode(.difference)
+
+                            Text(selectedItem)
+                                .font(.custom("SFCamera", size: 15))
+                                .padding(.vertical, 3)
+                                .padding(.horizontal, 6)
+                                .background(.white)
+                                .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
+                                .blendMode(.difference)
+                        }
+                        .padding(14)
+                        .transformEffect(.identity)
+//                        .animation(nil)
+                        , alignment: .bottomLeading
+                    )
                     .overlay(
                         HStack {
                             Spacer()
@@ -122,19 +140,19 @@ struct PaletteView: View {
 
     private func updateGridCounts() {
         switch selectedItem {
-        case "1×3":
+        case "3 COLORS":
             gridConfig.rowCount = 3
             gridConfig.columnCount = 1
-        case "1×4":
+        case "4 COLORS":
             gridConfig.rowCount = 4
             gridConfig.columnCount = 1
-        case "1×6":
+        case "6 COLORS":
             gridConfig.rowCount = 6
             gridConfig.columnCount = 1
-        case "3×3":
+        case "9 COLORS":
             gridConfig.rowCount = 3
             gridConfig.columnCount = 3
-        case "3×4":
+        case "12 COLORS":
             gridConfig.rowCount = 4
             gridConfig.columnCount = 3
         default:
@@ -149,13 +167,13 @@ struct PaletteView: View {
         var extraHeight: CGFloat = 0
 
         switch heightSize {
-        case "1×4":
+        case "4 COLORS":
             extraHeight = itemHeight
-        case "1×6":
+        case "6 COLORS":
             extraHeight = itemHeight * 2
-        case "3×3":
+        case "9 COLORS":
             extraHeight = itemHeight * 3
-        case "3×4":
+        case "12 COLORS":
             extraHeight = itemHeight * 4
         default:
             extraHeight = 0
@@ -175,15 +193,15 @@ struct PaletteView: View {
         ]
 
         if currentHeight < thresholds[0] {
-            heightSize = "1×3"
+            heightSize = "3 COLORS"
         } else if currentHeight < thresholds[1] {
-            heightSize = "1×4"
+            heightSize = "4 COLORS"
         } else if currentHeight < thresholds[2] {
-            heightSize = "1×6"
+            heightSize = "6 COLORS"
         } else if currentHeight < thresholds[3] {
-            heightSize = "3×3"
+            heightSize = "9 COLORS"
         } else {
-            heightSize = "3×4"
+            heightSize = "12 COLORS"
         }
 
         updateGridCounts()
@@ -200,15 +218,15 @@ struct PaletteView: View {
         ]
 
         if currentHeight < thresholds[0] {
-            selectedItem = "1×3"
+            selectedItem = "3 COLORS"
         } else if currentHeight < thresholds[1] {
-            selectedItem = "1×4"
+            selectedItem = "4 COLORS"
         } else if currentHeight < thresholds[2] {
-            selectedItem = "1×6"
+            selectedItem = "6 COLORS"
         } else if currentHeight < thresholds[3] {
-            selectedItem = "3×3"
+            selectedItem = "9 COLORS"
         } else {
-            selectedItem = "3×4"
+            selectedItem = "12 COLORS"
         }
 
         updateGridCounts()
@@ -216,11 +234,11 @@ struct PaletteView: View {
 
     private func calculateOpacity(for index: Int) -> Double {
         let selectedOpacityLevels: [String: Int] = [
-            "1×3": 1,
-            "1×4": 2,
-            "1×6": 3,
-            "3×3": 4,
-            "3×4": 5
+            "3 COLORS": 1,
+            "4 COLORS": 2,
+            "6 COLORS": 3,
+            "9 COLORS": 4,
+            "12 COLORS": 5
         ]
 
         if let opacityLevel = selectedOpacityLevels[selectedItem], index < opacityLevel {
