@@ -17,7 +17,7 @@ extension UIImage {
         }
     }
 
-    func extractColors(colorCount: Int = 12, scaleSize: CGSize = CGSize(width: 64, height: 64)) -> [UIColor] {
+    func extractColors(colorCount: Int = 32, scaleSize: CGSize = CGSize(width: 64, height: 64)) -> [UIColor] {
         guard let resizedImage = self.resized(to: scaleSize), let cgImage = resizedImage.cgImage else { return [] }
 
         let width = cgImage.width
