@@ -12,6 +12,10 @@ struct BottomControls: View {
     @GestureState private var isTapped = false
     @StateObject private var orientationViewModel = DeviceOrientationViewModel()
 
+    @EnvironmentObject var gridConfig: GridConfig
+
+    @Binding var switchPalette: Bool
+
     let width: CGFloat = 79
 //    let action: () -> ()
 
@@ -52,6 +56,24 @@ struct BottomControls: View {
                         .strokeBorder(.white.opacity(0.9), lineWidth: 2)
                 )
             , alignment: .leading
+        )
+        .overlay(
+            Button(action: {
+                withAnimation(.smooth(duration: 0.25)) {
+                    switchPalette.toggle()
+                    gridConfig.rowCount = 3
+                    gridConfig.columnCount = 3
+                }
+            }) {
+                Image(systemName: switchPalette ? "swatchpalette.fill" : "swatchpalette")
+                    .font(.title3)
+                    .foregroundStyle(switchPalette ? .black : .white)
+                    .offset(x: 1.5)
+                    .padding(13)
+                    .background(switchPalette ? .white : Color(.systemFill))
+                    .clipShape(Circle())
+            }
+            , alignment: .trailing
         )
         .padding(.top, 10)
         .padding(.horizontal)

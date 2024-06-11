@@ -14,6 +14,8 @@
 		D4257DC72BF6B33400B2FC57 /* PalatteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4257DC62BF6B33400B2FC57 /* PalatteView.swift */; };
 		D4257DC92BF6B34600B2FC57 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4257DC82BF6B34600B2FC57 /* CameraView.swift */; };
 		D4257DCB2BF6B36200B2FC57 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4257DCA2BF6B36200B2FC57 /* UIImage+Extension.swift */; };
+		D44F50EC2C17FEB8002940D6 /* ColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44F50EB2C17FEB8002940D6 /* ColorView.swift */; };
+		D44F50EE2C182CC7002940D6 /* MeshGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44F50ED2C182CC7002940D6 /* MeshGradientView.swift */; };
 		D48528052C05B6BE004289DE /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48528042C05B6BE004289DE /* Haptics.swift */; };
 		D48528072C05BB1E004289DE /* SafeAreaBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48528062C05BB1E004289DE /* SafeAreaBlock.swift */; };
 		D48528092C05BE56004289DE /* Orientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48528082C05BE56004289DE /* Orientation.swift */; };
@@ -38,6 +40,8 @@
 		D4257DC62BF6B33400B2FC57 /* PalatteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PalatteView.swift; sourceTree = "<group>"; };
 		D4257DC82BF6B34600B2FC57 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		D4257DCA2BF6B36200B2FC57 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
+		D44F50EB2C17FEB8002940D6 /* ColorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorView.swift; sourceTree = "<group>"; };
+		D44F50ED2C182CC7002940D6 /* MeshGradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeshGradientView.swift; sourceTree = "<group>"; };
 		D48528042C05B6BE004289DE /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 		D48528062C05BB1E004289DE /* SafeAreaBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeAreaBlock.swift; sourceTree = "<group>"; };
 		D48528082C05BE56004289DE /* Orientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Orientation.swift; sourceTree = "<group>"; };
@@ -113,6 +117,7 @@
 				D4E1804B2BFC0BC900053746 /* Components */,
 				D4257DC62BF6B33400B2FC57 /* PalatteView.swift */,
 				D4257DC82BF6B34600B2FC57 /* CameraView.swift */,
+				D44F50EB2C17FEB8002940D6 /* ColorView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -122,6 +127,7 @@
 			children = (
 				D4E1804C2BFC0BD300053746 /* BottomControls.swift */,
 				D48528062C05BB1E004289DE /* SafeAreaBlock.swift */,
+				D44F50ED2C182CC7002940D6 /* MeshGradientView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -228,8 +234,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D44F50EE2C182CC7002940D6 /* MeshGradientView.swift in Sources */,
 				D4E180592BFC4FCE00053746 /* ColorComputation.swift in Sources */,
 				D4E1804D2BFC0BD300053746 /* BottomControls.swift in Sources */,
+				D44F50EC2C17FEB8002940D6 /* ColorView.swift in Sources */,
 				D48528052C05B6BE004289DE /* Haptics.swift in Sources */,
 				D4257DC72BF6B33400B2FC57 /* PalatteView.swift in Sources */,
 				D4E180572BFC44FA00053746 /* GridView.swift in Sources */,
@@ -386,6 +394,7 @@
 				INFOPLIST_KEY_UIRequiresFullScreen = NO;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -419,6 +428,7 @@
 				INFOPLIST_KEY_UIRequiresFullScreen = NO;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

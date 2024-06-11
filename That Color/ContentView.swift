@@ -35,14 +35,16 @@ struct ContentView: View {
             CameraView(paletteColors: $paletteColors, colorCount: gridConfig.colorCount)
                 .edgesIgnoringSafeArea(.all)
 
-            PaletteView(colors: paletteColors, selectedItem: $selectedItem)
-                .environmentObject(gridConfig)
+            NavigationStack {
+                PaletteView(colors: paletteColors, selectedItem: $selectedItem)
+                    .environmentObject(gridConfig)
+            }
         }
         .onAppear {
             paletteColors = Array(repeating: .clear, count: gridConfig.colorCount)
         }
         .onChange(of: gridConfig.colorCount) { newValue, _ in
-            paletteColors = Array(repeating: .clear, count: newValue)
+//            paletteColors = Array(repeating: .clear, count: newValue)
             Haptics.shared.play(.light, customIntensity: 0.7)
         }
     }

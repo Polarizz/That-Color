@@ -9,7 +9,10 @@ import SwiftUI
 
 struct PaletteView: View {
 
+    @Namespace private var namespace
+
     @State private var fakeOffset: CGFloat = 0.0
+    @State private var switchPalette = true
 
     @EnvironmentObject var gridConfig: GridConfig
 
@@ -58,34 +61,46 @@ struct PaletteView: View {
                         }
                     }
 
-                    VStack(spacing: 5) {
-                        Grid(horizontalSpacing: 5, verticalSpacing: 5) {
-                            ForEach(0..<gridConfig.rowCount, id: \.self) { rowIndex in
-                                GridRow {
-                                    ForEach(0..<gridConfig.columnCount, id: \.self) { columnIndex in
-                                        let index = rowIndex * gridConfig.columnCount + columnIndex
-                                        if index < colors.count {
-                                            colors[index]
-                                                .background(Color.black)
-                                                .cornerRadius(6)
-                                                .transition(.opacity)
+                    Group {
+                        if switchPalette {
+                            Grid(horizontalSpacing: 5, verticalSpacing: 5) {
+                                ForEach(0..<gridConfig.rowCount, id: \.self) { rowIndex in
+                                    GridRow {
+                                        ForEach(0..<gridConfig.columnCount, id: \.self) { columnIndex in
+                                            let index = rowIndex * gridConfig.columnCount + columnIndex
+                                            if index < colors.count {
+                                                NavigationLink {
+                                                    ColorView()
+                                                        .contentShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
+                                                        .navigationTransition(.zoom(
+                                                            sourceID: colors[index], in: namespace))
+                                                } label: {
+                                                    colors[index]
+                                                        .background(Color.black)
+                                                        .cornerRadius(6)
+                                                        .transition(.opacity)
+                                                }
+                                                .matchedTransitionSource(id: colors[index], in: namespace)
+                                            }
                                         }
                                     }
                                 }
                             }
+                        } else {
+                            MeshGradientView(colors: colors)
                         }
                     }
-                    .frame(height: calculateHeight(geoSize: geo.size))
+                    .frame(height: switchPalette ? calculateHeight(geoSize: geo.size) : nil)
                     .overlay(
                         ZStack {
-                            Text(selectedItem)
+                            Text(switchPalette ? selectedItem : "GRADIENT")
                                 .font(.custom("SFCamera", size: 15))
                                 .padding(.vertical, 3)
                                 .padding(.horizontal, 6)
                                 .foregroundStyle(.white)
                                 .blendMode(.difference)
 
-                            Text(selectedItem)
+                            Text(switchPalette ? selectedItem : "GRADIENT")
                                 .font(.custom("SFCamera", size: 15))
                                 .padding(.vertical, 3)
                                 .padding(.horizontal, 6)
@@ -93,8 +108,8 @@ struct PaletteView: View {
                                 .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
                                 .blendMode(.difference)
                         }
-                        .padding(14)
-                        .transformEffect(.identity)
+                            .padding(14)
+                            .transformEffect(.identity)
                         , alignment: .bottomLeading
                     )
                     .overlay(
@@ -107,12 +122,12 @@ struct PaletteView: View {
                                 .padding(9)
                             Spacer()
                         }
-                        .padding(20)
-                        .contentShape(Rectangle())
-                        .padding(-20),
+                            .padding(20)
+                            .contentShape(Rectangle())
+                            .padding(-20),
                         alignment: .bottom
                     )
-                    .gesture(
+                    .simultaneousGesture(
                         DragGesture()
                             .onChanged { value in
                                 fakeOffset = value.translation.height
@@ -123,13 +138,14 @@ struct PaletteView: View {
                                 fakeOffset = 0
                             }
                     )
-                    .animation(.smooth(duration: 0.3))
+                    .animation(.smooth(duration: 0.27))
+                    .transformEffect(.identity)
                 }
             }
 
             Spacer()
 
-            BottomControls()
+            BottomControls(switchPalette: $switchPalette)
                 .padding(.vertical, 30)
         }
         .padding([.top, .horizontal])
