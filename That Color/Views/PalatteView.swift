@@ -91,6 +91,7 @@ struct PaletteView: View {
                         }
                     }
                     .frame(height: switchPalette ? calculateHeight(geoSize: geo.size) : nil)
+                    .transformEffect(.identity)
                     .overlay(
                         ZStack {
                             Text(switchPalette ? selectedItem : "GRADIENT")
@@ -127,18 +128,22 @@ struct PaletteView: View {
                             .padding(-20),
                         alignment: .bottom
                     )
-                    .simultaneousGesture(
+                    .highPriorityGesture(
                         DragGesture()
                             .onChanged { value in
-                                fakeOffset = value.translation.height
-                                realtimeHandleDragChange(currentHeight: calculateHeight(geoSize: geo.size), geo: geo)
+                                if switchPalette {
+                                    fakeOffset = value.translation.height
+                                    realtimeHandleDragChange(currentHeight: calculateHeight(geoSize: geo.size), geo: geo)
+                                }
                             }
                             .onEnded { _ in
-                                handleDragChange(currentHeight: calculateHeight(geoSize: geo.size), geo: geo)
-                                fakeOffset = 0
+                                if switchPalette {
+                                    handleDragChange(currentHeight: calculateHeight(geoSize: geo.size), geo: geo)
+                                    fakeOffset = 0
+                                }
                             }
                     )
-                    .animation(.smooth(duration: 0.27))
+                    .animation(.smooth(duration: 0.25))
                     .transformEffect(.identity)
                 }
             }
