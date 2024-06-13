@@ -37,6 +37,9 @@ struct MeshGradientView: View {
                 t += 0.02
             }
         }
+        .onTapGesture {
+            Haptics.shared.play(.soft, customIntensity: 0.7)
+        }
     }
 
     func sinInRange(_ range: ClosedRange<Float>, _ offset: Float, _ timeScale: Float, _ t: Float) -> Float {

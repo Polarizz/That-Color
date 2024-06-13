@@ -9,6 +9,8 @@ import SwiftUI
 
 struct PaletteView: View {
 
+    @State private var orientation = UIDeviceOrientation.unknown
+
     @Namespace private var namespace
 
     @State private var fakeOffset: CGFloat = 0.0
@@ -102,7 +104,7 @@ struct PaletteView: View {
                                 .font(.custom("SFCamera", size: 15))
                                 .padding(.vertical, 3)
                                 .padding(.horizontal, 6)
-                                .foregroundStyle(.white)
+                                .foregroundColor(.white)
                                 .blendMode(.difference)
 
                             Text(switchPalette ? selectedItem : "GRADIENT")

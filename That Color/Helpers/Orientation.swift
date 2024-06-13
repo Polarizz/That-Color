@@ -6,27 +6,21 @@
 //
 
 import SwiftUI
-import Combine
 
-class DeviceOrientationViewModel: ObservableObject {
-    @Published var rotationAngle: Angle = .degrees(0)
-    private var cancellables: Set<AnyCancellable> = []
+struct DeviceRotationViewModifier: ViewModifier {
+    let action: (UIDeviceOrientation) -> Void
 
-    init() {
-        NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)
-            .map { _ in UIDevice.current.orientation }
-            .sink { [weak self] orientation in
-                switch orientation {
-                case .landscapeLeft:
-                    self?.rotationAngle = .degrees(90)
-                case .landscapeRight:
-                    self?.rotationAngle = .degrees(-90)
-                case .portraitUpsideDown:
-                    self?.rotationAngle = .degrees(180)
-                default:
-                    self?.rotationAngle = .degrees(0)
-                }
+    func body(content: Content) -> some View {
+        content
+            .onAppear()
+            .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
+                action(UIDevice.current.orientation)
             }
-            .store(in: &cancellables)
+    }
+}
+
+extension View {
+    func onRotate(perform action: @escaping (UIDeviceOrientation) -> Void) -> some View {
+        self.modifier(DeviceRotationViewModifier(action: action))
     }
 }

@@ -9,8 +9,9 @@ import SwiftUI
 
 struct BottomControls: View {
 
+    @State private var orientation = UIDeviceOrientation.unknown
+
     @GestureState private var isTapped = false
-    @StateObject private var orientationViewModel = DeviceOrientationViewModel()
 
     @EnvironmentObject var gridConfig: GridConfig
 
@@ -50,7 +51,6 @@ struct BottomControls: View {
         .overlay(
             RoundedRectangle(cornerRadius: 6, style: .continuous)
                 .frame(width: 50, height: 50)
-                .rotationEffect(orientationViewModel.rotationAngle) // Apply rotation based on orientation
                 .overlay(
                     RoundedRectangle(cornerRadius: 6, style: .continuous)
                         .strokeBorder(.white.opacity(0.9), lineWidth: 2)
