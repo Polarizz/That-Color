@@ -16,6 +16,9 @@
 		D4257DCB2BF6B36200B2FC57 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4257DCA2BF6B36200B2FC57 /* UIImage+Extension.swift */; };
 		D44F50EC2C17FEB8002940D6 /* ColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44F50EB2C17FEB8002940D6 /* ColorView.swift */; };
 		D44F50EE2C182CC7002940D6 /* MeshGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44F50ED2C182CC7002940D6 /* MeshGradientView.swift */; };
+		D44F50F12C1A6DA5002940D6 /* SFCamera-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D44F50F02C1A6DA5002940D6 /* SFCamera-Medium.ttf */; };
+		D44F50F22C1A6DA5002940D6 /* SFCamera-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D44F50EF2C1A6DA5002940D6 /* SFCamera-Bold.ttf */; };
+		D44F50F42C1A86AE002940D6 /* Ripple.metal in Sources */ = {isa = PBXBuildFile; fileRef = D44F50F32C1A86AE002940D6 /* Ripple.metal */; };
 		D48528052C05B6BE004289DE /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48528042C05B6BE004289DE /* Haptics.swift */; };
 		D48528072C05BB1E004289DE /* SafeAreaBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48528062C05BB1E004289DE /* SafeAreaBlock.swift */; };
 		D48528092C05BE56004289DE /* Orientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48528082C05BE56004289DE /* Orientation.swift */; };
@@ -42,6 +45,9 @@
 		D4257DCA2BF6B36200B2FC57 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
 		D44F50EB2C17FEB8002940D6 /* ColorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorView.swift; sourceTree = "<group>"; };
 		D44F50ED2C182CC7002940D6 /* MeshGradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeshGradientView.swift; sourceTree = "<group>"; };
+		D44F50EF2C1A6DA5002940D6 /* SFCamera-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFCamera-Bold.ttf"; sourceTree = "<group>"; };
+		D44F50F02C1A6DA5002940D6 /* SFCamera-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFCamera-Medium.ttf"; sourceTree = "<group>"; };
+		D44F50F32C1A86AE002940D6 /* Ripple.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Ripple.metal; sourceTree = "<group>"; };
 		D48528042C05B6BE004289DE /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 		D48528062C05BB1E004289DE /* SafeAreaBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeAreaBlock.swift; sourceTree = "<group>"; };
 		D48528082C05BE56004289DE /* Orientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Orientation.swift; sourceTree = "<group>"; };
@@ -118,6 +124,7 @@
 				D4257DC62BF6B33400B2FC57 /* PalatteView.swift */,
 				D4257DC82BF6B34600B2FC57 /* CameraView.swift */,
 				D44F50EB2C17FEB8002940D6 /* ColorView.swift */,
+				D44F50F32C1A86AE002940D6 /* Ripple.metal */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -147,6 +154,8 @@
 			isa = PBXGroup;
 			children = (
 				D4E180722C053DC000053746 /* SFCamera.ttf */,
+				D44F50EF2C1A6DA5002940D6 /* SFCamera-Bold.ttf */,
+				D44F50F02C1A6DA5002940D6 /* SFCamera-Medium.ttf */,
 				D4E1806E2BFD474B00053746 /* BNHightideRegular.ttf */,
 			);
 			path = Fonts;
@@ -221,6 +230,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				D4E1806F2BFD474B00053746 /* BNHightideRegular.ttf in Resources */,
+				D44F50F12C1A6DA5002940D6 /* SFCamera-Medium.ttf in Resources */,
+				D44F50F22C1A6DA5002940D6 /* SFCamera-Bold.ttf in Resources */,
 				D4257DBF2BF6B31A00B2FC57 /* Preview Assets.xcassets in Resources */,
 				D4E180732C053DC000053746 /* SFCamera.ttf in Resources */,
 				D4257DBC2BF6B31A00B2FC57 /* Assets.xcassets in Resources */,
@@ -243,6 +254,7 @@
 				D4E180572BFC44FA00053746 /* GridView.swift in Sources */,
 				D4257DBA2BF6B31900B2FC57 /* ContentView.swift in Sources */,
 				D4E180612BFD38D900053746 /* ProgressiveBlur.swift in Sources */,
+				D44F50F42C1A86AE002940D6 /* Ripple.metal in Sources */,
 				D4257DCB2BF6B36200B2FC57 /* UIImage+Extension.swift in Sources */,
 				D48528092C05BE56004289DE /* Orientation.swift in Sources */,
 				D4257DB82BF6B31900B2FC57 /* That_ColorApp.swift in Sources */,
@@ -391,7 +403,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UIRequiresFullScreen = NO;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
@@ -425,7 +437,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UIRequiresFullScreen = NO;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;

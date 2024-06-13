@@ -14,6 +14,9 @@ struct PaletteView: View {
     @State private var fakeOffset: CGFloat = 0.0
     @State private var switchPalette = true
 
+    @State var counter: Int = 0
+    @State var origin: CGPoint = .zero
+
     @EnvironmentObject var gridConfig: GridConfig
 
     let items = ["3 COLORS", "4 COLORS", "6 COLORS", "9 COLORS", "12 COLORS"]
@@ -70,10 +73,11 @@ struct PaletteView: View {
                                             let index = rowIndex * gridConfig.columnCount + columnIndex
                                             if index < colors.count {
                                                 NavigationLink {
-                                                    ColorView()
+                                                    ColorView(color: colors[index])
                                                         .contentShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
                                                         .navigationTransition(.zoom(
                                                             sourceID: colors[index], in: namespace))
+                                                        .navigationBarBackButtonHidden(true)
                                                 } label: {
                                                     colors[index]
                                                         .background(Color.black)
@@ -109,8 +113,8 @@ struct PaletteView: View {
                                 .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
                                 .blendMode(.difference)
                         }
-                            .padding(14)
-                            .transformEffect(.identity)
+                        .padding(14)
+                        .transformEffect(.identity)
                         , alignment: .bottomLeading
                     )
                     .overlay(
@@ -144,7 +148,15 @@ struct PaletteView: View {
                             }
                     )
                     .animation(.smooth(duration: 0.25))
-                    .transformEffect(.identity)
+                    .onPressingChanged { point in
+                        if let point {
+                            if !switchPalette {
+                                origin = point
+                                counter += 1
+                            }
+                        }
+                    }
+                    .modifier(RippleEffect(at: origin, trigger: counter))
                 }
             }
 

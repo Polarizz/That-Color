@@ -39,6 +39,7 @@ struct ContentView: View {
                 PaletteView(colors: paletteColors, selectedItem: $selectedItem)
                     .environmentObject(gridConfig)
             }
+            .background(.black)
         }
         .onAppear {
             paletteColors = Array(repeating: .clear, count: gridConfig.colorCount)
@@ -47,5 +48,6 @@ struct ContentView: View {
 //            paletteColors = Array(repeating: .clear, count: newValue)
             Haptics.shared.play(.light, customIntensity: 0.7)
         }
+        .background(.black)
     }
 }
